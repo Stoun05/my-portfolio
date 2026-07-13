@@ -20,6 +20,10 @@ const projects = [
     year: "2026",
     role: "UI/UX dizaýn we front-end",
     tools: ["React 19", "Vite", "Motion", "CSS"],
+    image: `${import.meta.env.BASE_URL}hand-poster.webp`,
+    imageAlt: "NeuralKinetics robot el animasiýasynyň görnüşi",
+    liveUrl: "https://stoun05.github.io/my-portfolio/",
+    repoUrl: "https://github.com/Stoun05/my-portfolio",
     details: [
       "Doly ekran wideo hero we öňe-yza hereket edýän robot eli",
       "Telefon hem-de kompýuter üçin responsive gurluş",
@@ -34,6 +38,9 @@ const projects = [
     year: "2026",
     role: "Önüm dizaýny we web gurluşy",
     tools: ["HTML", "CSS", "JavaScript", "Figma"],
+    image: "https://raw.githubusercontent.com/Stoun05/aybolek-mebel-v2/main/images/hero/store-wide.webp",
+    imageAlt: "Aýbölek mebel saýtynyň baş sahypasy",
+    repoUrl: "https://github.com/Stoun05/aybolek-mebel-v2",
     details: [
       "Kategoriýalar boýunça düşnükli mebel katalogy",
       "Önümleriň aýratyn maglumat sahypalary",
@@ -47,7 +54,10 @@ const projects = [
     description: "Atlary, olaryň jikme-jik profilini we nesil daragtyny düşnükli görnüşde görkezýän gurluşly portal.",
     year: "2026",
     role: "Maglumat gurluşy we front-end",
-    tools: ["HTML", "CSS", "JavaScript", "GitHub"],
+    tools: ["Next.js", "TypeScript", "Tailwind CSS", "GitHub"],
+    image: "https://raw.githubusercontent.com/Stoun05/horse-portal-v2/main/public/horse-hero.png",
+    imageAlt: "Ahalteke atçylyk portalynyň baş sahypasy",
+    repoUrl: "https://github.com/Stoun05/horse-portal-v2",
     details: [
       "Atlaryň suratlary we aýratyn profilleri",
       "Nesil daragty we baglanyşykly maglumat gurluşy",
@@ -365,8 +375,9 @@ export default function App() {
                   <ArrowUpRight />
                 </div>
                 <div className="project-visual">
-                  <span>{project.title.charAt(0)}</span>
-                  <div className="project-orbit" />
+                  <img src={project.image} alt={project.imageAlt} loading="lazy" />
+                  <div className="project-visual-shade" />
+                  <span className="project-preview-label">Taslama görnüşi</span>
                 </div>
                 <div className="project-info">
                   <p>{project.type}</p>
@@ -444,11 +455,16 @@ export default function App() {
                   <div key={detail}><span>0{index + 1}</span><p>{detail}</p></div>
                 ))}
               </div>
-              {selectedProject.title === "NeuralKinetics" && (
-                <a className="case-link" href="https://stoun05.github.io/my-portfolio/" target="_blank" rel="noreferrer">
-                  Saýty aç <ArrowUpRight />
+              <div className="case-actions">
+                {selectedProject.liveUrl && (
+                  <a className="case-link" href={selectedProject.liveUrl} target="_blank" rel="noreferrer">
+                    Saýty aç <ArrowUpRight />
+                  </a>
+                )}
+                <a className="case-link case-link-secondary" href={selectedProject.repoUrl} target="_blank" rel="noreferrer">
+                  GitHub-da gör <ArrowUpRight />
                 </a>
-              )}
+              </div>
             </motion.div>
           </motion.div>
         )}
