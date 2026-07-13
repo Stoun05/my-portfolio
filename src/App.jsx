@@ -4,31 +4,55 @@ import { AnimatePresence, motion, useMotionValue, useScroll, useSpring } from "m
 
 const ease = [0.16, 1, 0.3, 1];
 const menuItems = [
-  ["Home", "#top"],
-  ["About", "#about"],
-  ["Projects", "#projects"],
-  ["Skills", "#skills"],
-  ["Contact", "#contact"],
+  ["Baş sahypa", "#top"],
+  ["Men barada", "#about"],
+  ["Taslamalar", "#projects"],
+  ["Başarnyklar", "#skills"],
+  ["Habarlaşmak", "#contact"],
 ];
 
 const projects = [
   {
     number: "01",
     title: "NeuralKinetics",
-    type: "React · Motion · Creative development",
-    description: "An immersive full-screen experience combining adaptive motion, cinematic video and precise responsive typography.",
+    type: "React · Motion · Kreatiw programma",
+    description: "Adaptasiýa hereketini, kinematografik wideony we takyk responsive tipografiýany birleşdirýän doly ekran tejribesi.",
+    year: "2026",
+    role: "UI/UX dizaýn we front-end",
+    tools: ["React 19", "Vite", "Motion", "CSS"],
+    details: [
+      "Doly ekran wideo hero we öňe-yza hereket edýän robot eli",
+      "Telefon hem-de kompýuter üçin responsive gurluş",
+      "Animasiýaly menýu, scroll progress we interaktiw cursor",
+    ],
   },
   {
     number: "02",
     title: "Aýbölek Furniture",
-    type: "UI/UX · Product catalogue · Web",
-    description: "A refined digital furniture catalogue designed around clear discovery, premium presentation and mobile-first browsing.",
+    type: "UI/UX · Haryt katalogy · Web",
+    description: "Mebelleri düşnükli tapmaga, premium görkezmäge we telefonda amatly seretmäge niýetlenen sanly katalog.",
+    year: "2026",
+    role: "Önüm dizaýny we web gurluşy",
+    tools: ["HTML", "CSS", "JavaScript", "Figma"],
+    details: [
+      "Kategoriýalar boýunça düşnükli mebel katalogy",
+      "Önümleriň aýratyn maglumat sahypalary",
+      "Mobil ulanyjylar üçin arassa we ýeňil nawigasiýa",
+    ],
   },
   {
     number: "03",
     title: "Horse Portal",
-    type: "Web platform · Catalogue · Data",
-    description: "A structured portal for presenting horses, detailed profiles and pedigree information through an accessible interface.",
+    type: "Web platforma · Katalog · Maglumat",
+    description: "Atlary, olaryň jikme-jik profilini we nesil daragtyny düşnükli görnüşde görkezýän gurluşly portal.",
+    year: "2026",
+    role: "Maglumat gurluşy we front-end",
+    tools: ["HTML", "CSS", "JavaScript", "GitHub"],
+    details: [
+      "Atlaryň suratlary we aýratyn profilleri",
+      "Nesil daragty we baglanyşykly maglumat gurluşy",
+      "Katalog boýunça gözleg we yzygiderli nawigasiýa",
+    ],
   },
 ];
 
@@ -90,7 +114,7 @@ function PingPongVideo() {
   }, []);
 
   return (
-    <video ref={videoRef} autoPlay muted playsInline preload="auto" aria-label="Robotic hand moving forwards and backwards">
+    <video ref={videoRef} autoPlay muted playsInline preload="auto" aria-label="Öňe-yza hereket edýän robot eli">
       <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260508_215831_c6a8989c-d716-4d8d-8745-e972a2eec711.mp4" type="video/mp4" />
     </video>
   );
@@ -162,11 +186,12 @@ function SectionLabel({ children }) {
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
+    document.body.style.overflow = menuOpen || selectedProject ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
-  }, [menuOpen]);
+  }, [menuOpen, selectedProject]);
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -194,23 +219,23 @@ export default function App() {
               onClick={() => setMenuOpen((value) => !value)}
               whileHover={{ scale: 1.025 }}
               whileTap={{ scale: 0.97 }}
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-label={menuOpen ? "Menýuny ýap" : "Menýuny aç"}
               aria-expanded={menuOpen}
             >
               <span className="circle white-circle">
                 {menuOpen ? <X size={12} strokeWidth={3} /> : <Plus size={12} strokeWidth={3} />}
               </span>
-              <span>{menuOpen ? "Close" : "Menu"}</span>
+              <span>{menuOpen ? "Ýap" : "Menýu"}</span>
             </motion.button>
 
             <div className="focus-pill desktop-only">
-              <span>Creative Developer</span><i /><span>UI/UX</span>
+              <span>Kreatiw Developer</span><i /><span>UI/UX</span>
             </div>
           </div>
 
-          <a className="system-pill" href="#projects" aria-label="View selected projects">
+          <a className="system-pill" href="#projects" aria-label="Saýlanan taslamalary gör">
             <span className="circle black-circle"><GridIcon /></span>
-            <span className="system-label">Selected Work</span>
+            <span className="system-label">Saýlanan işler</span>
           </a>
         </motion.nav>
       </header>
@@ -225,7 +250,7 @@ export default function App() {
             transition={{ duration: 0.8, ease }}
           >
             <div className="menu-inner">
-              <p className="menu-kicker">Navigation</p>
+              <p className="menu-kicker">Nawigasiýa</p>
               <div className="menu-links">
                 {menuItems.map(([label, href], index) => (
                   <motion.a
@@ -243,7 +268,7 @@ export default function App() {
                 ))}
               </div>
               <div className="menu-meta">
-                <span>Available for selected projects</span>
+                <span>Täze taslamalar üçin açyk</span>
                 <span>2026 portfolio</span>
               </div>
             </div>
@@ -264,35 +289,35 @@ export default function App() {
           <motion.div className="hero-footer" initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 1, delay: 0.5, ease }}>
             <div className="copy">
               <motion.div className="eyebrow" initial={{ y: 16, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, delay: 0.6, ease }}>
-                <span className="dot" /><span>Independent designer & developer</span>
+                <span className="dot" /><span>Garaşsyz dizaýner we developer</span>
               </motion.div>
               <motion.h1 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, delay: 0.8, ease }}>
-                I Design. I Build.<br />Ideas Into Reality.
+                Dizaýn edýärin. Gurýaryn.<br />Pikirleri hakykata öwürýärin.
               </motion.h1>
               <motion.div className="actions" initial={{ y: 16, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, delay: 1, ease }}>
-                <a className="button primary" href="#projects">See Projects</a>
-                <a className="button secondary" href="#about">About Me</a>
+                <a className="button primary" href="#projects">Taslamalary gör</a>
+                <a className="button secondary" href="#about">Men barada</a>
               </motion.div>
             </div>
             <div className="technology-tags">
-              {["React", "UI/UX", "Creative Code"].map((tag) => <span key={tag}>{tag}</span>)}
+              {["React", "UI/UX", "Kreatiw kod"].map((tag) => <span key={tag}>{tag}</span>)}
             </div>
           </motion.div>
         </section>
 
         <section className="about section" id="about">
-          <SectionLabel>About</SectionLabel>
+          <SectionLabel>Men barada</SectionLabel>
           <motion.div className="about-grid" initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.25 }} transition={{ duration: 0.9, ease }}>
-            <h2>Digital experiences with clarity, character and purpose.</h2>
+            <h2>Düşnükli, häsiýetli we maksatly sanly tejribeler.</h2>
             <div className="about-copy">
-              <p>I combine design thinking and front-end development to turn early ideas into polished, responsive digital products.</p>
-              <p>My work moves from visual systems and prototypes to complete websites that feel intuitive on every screen.</p>
+              <p>Ilkinji pikirleri kämil we responsive sanly önümlere öwürmek üçin dizaýn pikirlenmesini front-end programmaçylygy bilen birleşdirýärin.</p>
+              <p>Işim wizual ulgamlardan we prototiplerden başlap, ähli ekranlarda düşnükli işleýän doly web saýtlara çenli dowam edýär.</p>
             </div>
           </motion.div>
         </section>
 
         <section className="projects section" id="projects">
-          <SectionLabel>Selected projects</SectionLabel>
+          <SectionLabel>Saýlanan taslamalar</SectionLabel>
           <div className="project-list">
             {projects.map((project, index) => (
               <motion.article
@@ -303,6 +328,16 @@ export default function App() {
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.8, delay: index * 0.08, ease }}
                 whileHover={{ y: -10 }}
+                role="button"
+                tabIndex={0}
+                aria-label={`${project.title} taslamasy barada giňişleýin maglumat`}
+                onClick={() => setSelectedProject(project)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    setSelectedProject(project);
+                  }
+                }}
               >
                 <div className="project-top">
                   <span>{project.number}</span>
@@ -316,6 +351,7 @@ export default function App() {
                   <p>{project.type}</p>
                   <h3>{project.title}</h3>
                   <span>{project.description}</span>
+                  <strong>Giňişleýin gör <ArrowUpRight /></strong>
                 </div>
               </motion.article>
             ))}
@@ -323,13 +359,13 @@ export default function App() {
         </section>
 
         <section className="skills section" id="skills">
-          <SectionLabel>Capabilities</SectionLabel>
+          <SectionLabel>Başarnyklar</SectionLabel>
           <div className="skills-grid">
             {[
-              ["01", "UI/UX Design", "Interfaces, responsive systems, wireframes and high-fidelity prototypes."],
-              ["02", "Front-end", "HTML, CSS, JavaScript and React experiences with considered motion."],
-              ["03", "Visual Direction", "Typography, color, composition and a consistent digital identity."],
-              ["04", "Product Thinking", "Clear structure and practical decisions from idea to launch."],
+              ["01", "UI/UX dizaýn", "Interfeýsler, responsive ulgamlar, wireframe we ýokary hilli prototipler."],
+              ["02", "Front-end programmaçylyk", "HTML, CSS, JavaScript we React arkaly oýlanyşykly animasiýaly tejribeler."],
+              ["03", "Wizual ugur", "Tipografiýa, reňk, kompozisiýa we bitewi sanly identika."],
+              ["04", "Önüm pikirlenmesi", "Pikirden işe goýberilişe çenli düşnükli gurluş we amaly çözgütler."],
             ].map(([number, title, text], index) => (
               <motion.div className="skill-row" key={title} initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.65, delay: index * 0.08, ease }}>
                 <span>{number}</span><h3>{title}</h3><p>{text}</p>
@@ -339,20 +375,63 @@ export default function App() {
         </section>
 
         <section className="contact section" id="contact">
-          <SectionLabel>Contact</SectionLabel>
+          <SectionLabel>Habarlaşmak</SectionLabel>
           <motion.div className="contact-inner" initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, ease }}>
-            <p>Have an idea?</p>
-            <h2>Let’s build something<br />worth remembering.</h2>
+            <p>Pikiriňiz barmy?</p>
+            <h2>Ýatda galjak bir zady<br />bilelikde döredeliň.</h2>
             <a className="contact-button" href="https://github.com/Stoun05" target="_blank" rel="noreferrer">
-              View my GitHub <ArrowUpRight />
+              GitHub profilimi gör <ArrowUpRight />
             </a>
           </motion.div>
           <footer className="site-footer">
             <span>© 2026 NeuralKinetics</span>
-            <a href="#top">Back to top ↑</a>
+            <a href="#top">Ýokary dolan ↑</a>
           </footer>
         </section>
       </main>
+
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div className="case-modal" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+            <motion.div
+              className="case-panel"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ duration: 0.75, ease }}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="case-title"
+            >
+              <button className="case-close" type="button" onClick={() => setSelectedProject(null)} aria-label="Taslama penjiresini ýap">
+                <X size={18} />
+              </button>
+              <div className="case-number">{selectedProject.number} / 03</div>
+              <p className="case-type">{selectedProject.type}</p>
+              <h2 id="case-title">{selectedProject.title}</h2>
+              <p className="case-description">{selectedProject.description}</p>
+              <div className="case-meta">
+                <div><span>Ýyl</span><strong>{selectedProject.year}</strong></div>
+                <div><span>Meniň işim</span><strong>{selectedProject.role}</strong></div>
+              </div>
+              <div className="case-tools">
+                {selectedProject.tools.map((tool) => <span key={tool}>{tool}</span>)}
+              </div>
+              <div className="case-details">
+                <h3>Esasy ýerine ýetirilen işler</h3>
+                {selectedProject.details.map((detail, index) => (
+                  <div key={detail}><span>0{index + 1}</span><p>{detail}</p></div>
+                ))}
+              </div>
+              {selectedProject.title === "NeuralKinetics" && (
+                <a className="case-link" href="https://stoun05.github.io/my-portfolio/" target="_blank" rel="noreferrer">
+                  Saýty aç <ArrowUpRight />
+                </a>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
