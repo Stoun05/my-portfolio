@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowDownRight, ArrowUpRight, Plus, X } from "lucide-react";
-import { AnimatePresence, motion, useMotionValue, useScroll, useSpring } from "motion/react";
+import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
 
 const ease = [0.16, 1, 0.3, 1];
 const menuItems = [
@@ -220,7 +220,6 @@ export default function App() {
   return (
     <>
       <ScrollProgress />
-      <CustomCursor />
       <header className="navbar-wrap">
         <motion.nav
           className="navbar"
