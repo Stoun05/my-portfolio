@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap");
+
+:root { font-family: "Inter", Arial, sans-serif; color: #080808; background: #fff; font-synthesis: none; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+html, body, #root { margin: 0; min-height: 100%; }
+button, a { font: inherit; }
+
+.hero {
+  position: relative; isolation: isolate; display: flex; min-height: 100vh; min-height: 100dvh;
+  flex-direction: column; justify-content: space-between; overflow: hidden; background: #fff;
+}
+.video-stage {
+  position: absolute; z-index: 0; top: 50%; left: 50%; width: 80%; height: 80%;
+  overflow: hidden; transform: translate(-50%, -50%);
+}
+.video-motion, .video-motion video { width: 100%; height: 100%; }
+.video-motion video { display: block; object-fit: cover; }
+
+.navbar {
+  position: fixed; z-index: 50; top: 0; left: 0; display: flex; width: 100%;
+  align-items: center; justify-content: space-between; padding: 16px; pointer-events: none;
+}
+.navbar > *, .navbar a, .navbar button { pointer-events: auto; }
+.nav-left, .brand, .menu-pill, .focus-pill, .system-pill { display: flex; align-items: center; }
+.nav-left { gap: 10px; }
+.brand { gap: 9px; color: #080808; text-decoration: none; }
+.brand-mark { width: 28px; height: 28px; overflow: visible; fill: #050505; transform: rotate(-35deg); }
+.brand-name { display: none; font-size: 14px; font-weight: 600; letter-spacing: -.03em; }
+.menu-pill {
+  height: 36px; gap: 8px; padding: 4px 12px 4px 4px; border: 0; border-radius: 999px;
+  background: #080808; color: #fff; cursor: pointer; font-size: 11px; font-weight: 500;
+}
+.circle { display: grid; width: 28px; height: 28px; flex: 0 0 auto; place-items: center; border: 0; border-radius: 50%; }
+.white-circle { background: #fff; color: #080808; }
+.black-circle { background: #080808; color: #fff; cursor: pointer; }
+.focus-pill, .system-pill { height: 36px; gap: 10px; padding: 4px 12px; border-radius: 999px; background: #f4f4f6; font-size: 11px; }
+.focus-pill i { width: 3px; height: 3px; border-radius: 50%; background: rgba(0,0,0,.3); }
+.desktop-only, .system-label { display: none; }
+.system-pill { padding: 4px; }
+.black-circle svg { width: 16px; height: 16px; fill: currentColor; }
+
+.hero-footer {
+  position: relative; z-index: 30; display: flex; width: 100%; flex-direction: column; gap: 24px;
+  margin-top: auto; padding: 112px 16px 20px;
+  background: linear-gradient(to top, #fff 0%, rgba(255,255,255,.8) 50%, transparent 100%);
+}
+.eyebrow { display: flex; align-items: center; gap: 9px; margin-bottom: 13px; color: rgba(0,0,0,.55); font-size: 13px; }
+.dot { width: 8px; height: 8px; flex: none; border-radius: 50%; background: #000; }
+h1 { max-width: 900px; margin: 0; font-size: clamp(2rem, 8vw, 4.5rem); font-weight: 300; letter-spacing: -.03em; line-height: 1; }
+.actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 23px; }
+.button { display: inline-flex; min-height: 40px; align-items: center; justify-content: center; padding: 0 18px; border-radius: 999px; font-size: 13px; font-weight: 500; text-decoration: none; }
+.primary { background: #080808; color: #fff; }
+.secondary { border: 1px solid rgba(0,0,0,.35); background: rgba(255,255,255,.15); color: #080808; backdrop-filter: blur(8px); }
+.technology-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+.technology-tags span { padding: 8px 12px; border: 1px solid rgba(0,0,0,.12); border-radius: 999px; background: rgba(255,255,255,.92); font-size: 11px; white-space: nowrap; }
+
+@media (min-width: 768px) {
+  .video-stage { width: 100%; height: 100%; }
+  .navbar { padding: 24px 32px; }
+  .nav-left { gap: 12px; }
+  .brand-name, .desktop-only, .system-label { display: flex; }
+  .brand { margin-right: 5px; }
+  .menu-pill, .focus-pill, .system-pill { height: 40px; }
+  .circle { width: 32px; height: 32px; }
+  .system-pill { gap: 10px; padding: 4px 14px 4px 4px; }
+  .hero-footer { flex-direction: row; align-items: flex-end; justify-content: space-between; gap: 40px; padding: 150px 32px 30px; }
+  h1 { font-size: clamp(2.5rem, 5.5vw, 4.5rem); }
+  .technology-tags { flex: 0 0 auto; justify-content: flex-end; padding-bottom: 3px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
