@@ -14,3 +14,5 @@ npm run dev
 ```bash
 npm run build
 ```
+
+Deployed automatically with GitHub Pages.
