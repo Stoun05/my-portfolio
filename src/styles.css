@@ -117,15 +117,11 @@ h1 { max-width: 960px; margin: 0; font-size: clamp(2.25rem, 9vw, 4.8rem); font-w
 .project-card:nth-child(3) { background: #e6dfd4; }
 .project-top { display: flex; justify-content: space-between; padding: 18px; font-size: 11px; }
 .project-top svg { width: 18px; height: 18px; }
-.project-visual { position: relative; display: grid; min-height: 260px; flex: 1; place-items: center; overflow: hidden; }
-.project-visual > span { position: relative; z-index: 2; font-size: 7.5rem; font-weight: 300; letter-spacing: -.08em; }
-.project-orbit { position: absolute; width: 230px; height: 230px; border: 1px solid rgba(0,0,0,.15); border-radius: 50%; }
-.project-orbit::before, .project-orbit::after { position: absolute; content: ""; inset: 25%; border: 1px solid rgba(0,0,0,.12); border-radius: 50%; }
-.project-orbit::after { inset: -30%; }
-.project-card:hover .project-orbit { animation: orbit-spin 8s linear infinite; }
-.project-card:hover .project-visual > span { transform: scale(1.06); }
-.project-visual > span { transition: transform .6s cubic-bezier(.16,1,.3,1); }
-@keyframes orbit-spin { to { transform: rotate(360deg); } }
+.project-visual { position: relative; min-height: 260px; flex: 1; overflow: hidden; background: #d8d8d4; }
+.project-visual img { width: 100%; height: 100%; min-height: 260px; display: block; object-fit: cover; transition: transform .9s cubic-bezier(.16,1,.3,1), filter .6s ease; }
+.project-card:hover .project-visual img { transform: scale(1.065); filter: saturate(1.05) contrast(1.02); }
+.project-visual-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.38), transparent 48%); pointer-events: none; }
+.project-preview-label { position: absolute; z-index: 2; left: 16px; bottom: 16px; padding: 7px 10px; border: 1px solid rgba(255,255,255,.32); border-radius: 999px; background: rgba(8,8,8,.28); color: #fff; font-size: 10px; backdrop-filter: blur(10px); }
 .project-info { padding: 22px; border-top: 1px solid rgba(0,0,0,.12); }
 .project-info p { margin: 0 0 8px; color: rgba(0,0,0,.48); font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
 .project-info h3 { margin: 0 0 12px; font-size: 2rem; font-weight: 400; letter-spacing: -.04em; }
@@ -187,6 +183,9 @@ h1 { max-width: 960px; margin: 0; font-size: clamp(2.25rem, 9vw, 4.8rem); font-w
   border-radius: 999px; background: #080808; color: #fff; font-size: 11px; text-decoration: none;
 }
 .case-link svg { width: 15px; height: 15px; }
+.case-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 28px; }
+.case-actions .case-link { margin-top: 0; }
+.case-link-secondary { border: 1px solid rgba(0,0,0,.22); background: transparent; color: #080808; }
 
 @media (max-width: 767px) {
   .video-stage { top: 45%; width: 82%; height: 72%; }
@@ -224,7 +223,7 @@ h1 { max-width: 960px; margin: 0; font-size: clamp(2.25rem, 9vw, 4.8rem); font-w
   .about-grid { grid-template-columns: minmax(0, 1.5fr) minmax(320px, .7fr); align-items: end; gap: 80px; }
   .project-list { grid-template-columns: repeat(3, 1fr); }
   .project-card { min-height: 600px; }
-  .project-visual > span { font-size: 10rem; }
+  .project-visual img { min-height: 330px; }
   .skill-row { grid-template-columns: 70px minmax(260px, .8fr) minmax(320px, 1fr); align-items: center; padding: 32px 0; }
   .skill-row p { grid-column: auto; margin: 0; }
   .contact { padding-top: 140px; }
@@ -239,6 +238,6 @@ h1 { max-width: 960px; margin: 0; font-size: clamp(2.25rem, 9vw, 4.8rem); font-w
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .video-float { transform: none !important; }
-  .project-card:hover .project-orbit { animation: none; }
+  .project-card:hover .project-visual img { transform: none; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
