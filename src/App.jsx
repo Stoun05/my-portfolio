@@ -78,87 +78,41 @@ function GridIcon() {
 
 function PingPongVideo() {
   const videoRef = useRef(null);
-  const reverseTimerRef = useRef(0);
-  const holdRef = useRef(0);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    let inViewport = true;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const mobile = window.matchMedia("(max-width: 767px)").matches;
+    let inViewport = true;
 
-    const clearAnimationTimers = () => {
-      window.clearTimeout(holdRef.current);
-      window.clearInterval(reverseTimerRef.current);
-    };
-
-    const canPlay = () => inViewport && !document.hidden && !reduceMotion;
-
-    const startForward = () => {
-      clearAnimationTimers();
-      video.currentTime = 0;
-      if (canPlay()) video.play().catch(() => {});
-    };
-
-    const beginReverse = () => {
-      video.pause();
-      if (!canPlay()) return;
-
-      holdRef.current = window.setTimeout(() => {
-        const stepMs = mobile ? 120 : 80;
-        const reverseStep = (stepMs / 1000) * 0.72;
-
-        reverseTimerRef.current = window.setInterval(() => {
-          if (!canPlay()) {
-            clearAnimationTimers();
-            return;
-          }
-          if (video.currentTime <= 0.08) {
-            startForward();
-            return;
-          }
-          video.currentTime = Math.max(0, video.currentTime - reverseStep);
-        }, stepMs);
-      }, 450);
-    };
-
-    const handleVisibility = () => {
-      if (canPlay()) {
+    const syncPlayback = () => {
+      if (inViewport && !document.hidden && !reduceMotion) {
         video.play().catch(() => {});
       } else {
         video.pause();
-        clearAnimationTimers();
       }
     };
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         inViewport = entry.isIntersecting;
-        if (inViewport) startForward();
-        else {
-          video.pause();
-          clearAnimationTimers();
-        }
+        syncPlayback();
       },
       { threshold: 0.08 }
     );
+
+    observer.observe(video);
+    document.addEventListener("visibilitychange", syncPlayback);
 
     if (reduceMotion) {
       video.pause();
       video.currentTime = 0.01;
     }
 
-    observer.observe(video);
-    video.addEventListener("ended", beginReverse);
-    document.addEventListener("visibilitychange", handleVisibility);
-
     return () => {
       observer.disconnect();
-      video.removeEventListener("ended", beginReverse);
-      document.removeEventListener("visibilitychange", handleVisibility);
-      clearAnimationTimers();
+      document.removeEventListener("visibilitychange", syncPlayback);
     };
   }, []);
 
@@ -168,12 +122,22 @@ function PingPongVideo() {
       autoPlay
       muted
       playsInline
+      loop
       preload="metadata"
+      poster={`${import.meta.env.BASE_URL}hand-poster.webp`}
       disablePictureInPicture
       controlsList="nodownload noplaybackrate"
       aria-label="Öňe-yza hereket edýän robot eli"
     >
-      <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260508_215831_c6a8989c-d716-4d8d-8745-e972a2eec711.mp4" type="video/mp4" />
+      <source
+        src={`${import.meta.env.BASE_URL}hand-720.mp4`}
+        media="(max-width: 767px)"
+        type="video/mp4"
+      />
+      <source
+        src={`${import.meta.env.BASE_URL}hand-1080.mp4`}
+        type="video/mp4"
+      />
     </video>
   );
 }
