@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowDownRight, ArrowUpRight, Plus, X } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useMotionValue, useScroll, useSpring } from "motion/react";
 
 const ease = [0.16, 1, 0.3, 1];
 const menuItems = [
@@ -96,6 +96,61 @@ function PingPongVideo() {
   );
 }
 
+function ScrollProgress() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 160,
+    damping: 28,
+    mass: 0.2,
+  });
+
+  return <motion.div className="scroll-progress" style={{ scaleX }} />;
+}
+
+function CustomCursor() {
+  const pointerX = useMotionValue(-100);
+  const pointerY = useMotionValue(-100);
+  const x = useSpring(pointerX, { stiffness: 650, damping: 42 });
+  const y = useSpring(pointerY, { stiffness: 650, damping: 42 });
+  const [active, setActive] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const move = (event) => {
+      pointerX.set(event.clientX);
+      pointerY.set(event.clientY);
+      setVisible(true);
+    };
+    const hover = (event) => {
+      setActive(Boolean(event.target.closest("a, button, .project-card")));
+    };
+    const leave = () => setVisible(false);
+
+    window.addEventListener("pointermove", move);
+    document.addEventListener("pointerover", hover);
+    document.documentElement.addEventListener("mouseleave", leave);
+    return () => {
+      window.removeEventListener("pointermove", move);
+      document.removeEventListener("pointerover", hover);
+      document.documentElement.removeEventListener("mouseleave", leave);
+    };
+  }, [pointerX, pointerY]);
+
+  return (
+    <motion.div
+      className="custom-cursor"
+      style={{ x, y }}
+      animate={{
+        opacity: visible ? 1 : 0,
+        width: active ? 42 : 10,
+        height: active ? 42 : 10,
+        backgroundColor: active ? "rgba(255,255,255,0)" : "#080808",
+      }}
+      transition={{ duration: 0.2 }}
+    />
+  );
+}
+
 function SectionLabel({ children }) {
   return (
     <div className="section-label">
@@ -117,6 +172,8 @@ export default function App() {
 
   return (
     <>
+      <ScrollProgress />
+      <CustomCursor />
       <header className="navbar-wrap">
         <motion.nav
           className="navbar"
@@ -245,6 +302,7 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.8, delay: index * 0.08, ease }}
+                whileHover={{ y: -10 }}
               >
                 <div className="project-top">
                   <span>{project.number}</span>
