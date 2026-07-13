@@ -15,50 +15,46 @@ function BrandMark() {
 
 function PingPongVideo() {
   const videoRef = useRef(null);
-  const frameRef = useRef(0);
+  const reverseTimerRef = useRef(0);
   const holdRef = useRef(0);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    let reversing = false;
-    let previousTime = 0;
-
-    const reverseFrame = (timestamp) => {
-      if (!reversing) return;
-      if (!previousTime) previousTime = timestamp;
-
-      const elapsed = Math.min((timestamp - previousTime) / 1000, 0.05);
-      previousTime = timestamp;
-      video.currentTime = Math.max(0, video.currentTime - elapsed * 0.75);
-
-      if (video.currentTime <= 0.04) {
-        reversing = false;
-        previousTime = 0;
-        video.currentTime = 0;
-        video.play().catch(() => {});
-        return;
-      }
-
-      frameRef.current = requestAnimationFrame(reverseFrame);
+    const finishReverse = () => {
+      window.clearInterval(reverseTimerRef.current);
+      video.currentTime = 0;
+      video.playbackRate = 1;
+      video.play().catch(() => {});
     };
 
     const beginReverse = () => {
       video.pause();
+
       holdRef.current = window.setTimeout(() => {
-        reversing = true;
-        previousTime = 0;
-        frameRef.current = requestAnimationFrame(reverseFrame);
-      }, 400);
+        const stepMs = 80;
+        const reverseSpeed = 0.72;
+
+        reverseTimerRef.current = window.setInterval(() => {
+          if (video.currentTime <= 0.08) {
+            finishReverse();
+            return;
+          }
+
+          video.currentTime = Math.max(
+            0,
+            video.currentTime - (stepMs / 1000) * reverseSpeed
+          );
+        }, stepMs);
+      }, 450);
     };
 
     video.addEventListener("ended", beginReverse);
     return () => {
-      reversing = false;
       video.removeEventListener("ended", beginReverse);
       window.clearTimeout(holdRef.current);
-      cancelAnimationFrame(frameRef.current);
+      window.clearInterval(reverseTimerRef.current);
     };
   }, []);
 
