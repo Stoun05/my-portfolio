@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Plus } from "lucide-react";
 import { motion } from "motion/react";
 
@@ -9,6 +10,62 @@ function BrandMark() {
       <rect x="6" y="4" width="9" height="24" rx="4.5" />
       <rect x="17" y="4" width="9" height="24" rx="4.5" />
     </svg>
+  );
+}
+
+function PingPongVideo() {
+  const videoRef = useRef(null);
+  const frameRef = useRef(0);
+  const holdRef = useRef(0);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    let reversing = false;
+    let previousTime = 0;
+
+    const reverseFrame = (timestamp) => {
+      if (!reversing) return;
+      if (!previousTime) previousTime = timestamp;
+
+      const elapsed = Math.min((timestamp - previousTime) / 1000, 0.05);
+      previousTime = timestamp;
+      video.currentTime = Math.max(0, video.currentTime - elapsed * 0.75);
+
+      if (video.currentTime <= 0.04) {
+        reversing = false;
+        previousTime = 0;
+        video.currentTime = 0;
+        video.play().catch(() => {});
+        return;
+      }
+
+      frameRef.current = requestAnimationFrame(reverseFrame);
+    };
+
+    const beginReverse = () => {
+      video.pause();
+      holdRef.current = window.setTimeout(() => {
+        reversing = true;
+        previousTime = 0;
+        frameRef.current = requestAnimationFrame(reverseFrame);
+      }, 400);
+    };
+
+    video.addEventListener("ended", beginReverse);
+    return () => {
+      reversing = false;
+      video.removeEventListener("ended", beginReverse);
+      window.clearTimeout(holdRef.current);
+      cancelAnimationFrame(frameRef.current);
+    };
+  }, []);
+
+  return (
+    <video ref={videoRef} autoPlay muted playsInline preload="auto" aria-label="NeuralKinetics adaptive system visualization">
+      <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260508_215831_c6a8989c-d716-4d8d-8745-e972a2eec711.mp4" type="video/mp4" />
+    </video>
   );
 }
 
@@ -28,9 +85,13 @@ export default function App() {
     <main className="hero" id="top">
       <div className="video-stage">
         <motion.div className="video-motion" initial={{ opacity: 0, scale: 1.05 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.8, ease }}>
-          <video autoPlay muted playsInline loop preload="metadata" aria-label="NeuralKinetics adaptive system visualization">
-            <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260508_215831_c6a8989c-d716-4d8d-8745-e972a2eec711.mp4" type="video/mp4" />
-          </video>
+          <motion.div
+            className="video-float"
+            animate={{ y: [0, -10, 0], scale: [1, 1.012, 1] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <PingPongVideo />
+          </motion.div>
         </motion.div>
       </div>
 
