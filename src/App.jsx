@@ -27,7 +27,7 @@ const projects = [
     details: [
       "Doly ekran wideo hero we öňe-yza hereket edýän robot eli",
       "Telefon hem-de kompýuter üçin responsive gurluş",
-      "Animasiýaly menýu, scroll progress we interaktiw cursor",
+      "Animasiýaly menýu, scroll progress we adaty, düşnükli mouse dolandyryşy",
     ],
   },
   {
@@ -161,50 +161,6 @@ function ScrollProgress() {
   });
 
   return <motion.div className="scroll-progress" style={{ scaleX }} />;
-}
-
-function CustomCursor() {
-  const pointerX = useMotionValue(-100);
-  const pointerY = useMotionValue(-100);
-  const x = useSpring(pointerX, { stiffness: 650, damping: 42 });
-  const y = useSpring(pointerY, { stiffness: 650, damping: 42 });
-  const [active, setActive] = useState(false);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const move = (event) => {
-      pointerX.set(event.clientX);
-      pointerY.set(event.clientY);
-      setVisible(true);
-    };
-    const hover = (event) => {
-      setActive(Boolean(event.target.closest("a, button, .project-card")));
-    };
-    const leave = () => setVisible(false);
-
-    window.addEventListener("pointermove", move);
-    document.addEventListener("pointerover", hover);
-    document.documentElement.addEventListener("mouseleave", leave);
-    return () => {
-      window.removeEventListener("pointermove", move);
-      document.removeEventListener("pointerover", hover);
-      document.documentElement.removeEventListener("mouseleave", leave);
-    };
-  }, [pointerX, pointerY]);
-
-  return (
-    <motion.div
-      className="custom-cursor"
-      style={{ x, y }}
-      animate={{
-        opacity: visible ? 1 : 0,
-        width: active ? 42 : 10,
-        height: active ? 42 : 10,
-        backgroundColor: active ? "rgba(255,255,255,0)" : "#080808",
-      }}
-      transition={{ duration: 0.2 }}
-    />
-  );
 }
 
 function SectionLabel({ children }) {
